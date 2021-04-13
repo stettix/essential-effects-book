@@ -2,7 +2,6 @@ package net.stettix.essentialeffects
 
 import cats.effect.{IO, IOApp}
 
-import scala.annotation.tailrec
 import scala.concurrent.duration._
 
 object TickingClock extends IOApp.Simple {
@@ -10,7 +9,6 @@ object TickingClock extends IOApp.Simple {
   override def run: IO[Unit] =
     tickingClock
 
-  @tailrec
   val tickingClock: IO[Unit] = {
 
     val tick: IO[Unit] = for {
@@ -19,7 +17,7 @@ object TickingClock extends IOApp.Simple {
       _ <- IO.sleep(1.second)
     } yield ()
 
-    tick >> tickingClock
+    tick.foreverM
   }
 
 }
